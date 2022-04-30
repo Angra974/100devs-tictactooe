@@ -2,17 +2,15 @@
   "name": "vital",
   "version": "1.0.0",
   "description": "Starter template for Vite with React (TypeScript). Supports Tailwind with CSS-Modules. Jest and @react/testing-library configured and ready to go. Also ESLint, Prettier, Husky, Commit-lint and Atomic Design for components.",
-  "homepage": "https://github.com/Angra974/vital-forked.git#readme",
+  "homepage": "https://github.com/Angra974/100devs-tictactooe",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Angra974/vital-forked.git"
+    "url": "git+https://github.com/Angra974/100devs-tictactooe.git"
   },
   "author": "Parlier Thierry <dev.thierryparlier@gmail.com>",
-  "original-author": "Josep Vidal <josepvidalvidal@gmail.com>",
-  "original-url": "https://github.com/jvidalv/vital",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Angra974/vital-forked.git/issues"
+    "url": "https://github.com/Angra974/100devs-tictactooe.git/issues"
   },
   "keywords": [
     "react",
@@ -46,7 +44,8 @@
     "prod": "node scripts/webp.js && vite build",
     "preview": "vite preview",
     "webp": "node scripts/webp.js",
-	 "deploy": "npm run build && gh-pages -d dist", 
+	"predeploy": "npm run build",
+	 "deploy": "gh-pages -d dist", 
     "lint:sass": "sass-lint -v -q",
     "lint:js": "standard 'src/assets/js/**/*.js'",
     "lint:js-fix": "standard --fix 'src/assets/js/**/*.js'",
