@@ -89,7 +89,6 @@ class TicTacToe {
     );
 
     let endGame = haveAWinner.length === 1;
-    console.log("end game : " + endGame);
     if (endGame) {
       partyResult.textContent = `Player ${player.toUpperCase()} win!`;
       partyResult.hidden = false;
@@ -99,9 +98,7 @@ class TicTacToe {
 
       party.updateScore(player.toLowerCase());
       localStorage.setItem("partyOngoing", "false");
-    }
-
-    if (!endGame && party.count > 8) {
+    } else if (!endGame && party.count > 7) {
       partyResult.textContent = `We have a draw!`;
       partyResult.hidden = false;
       setTimeout(() => {
@@ -146,7 +143,6 @@ const App = (): JSX.Element => {
 
         // no need to do anything before the 5th click
         let endGame = false;
-        console.log(party.count);
         if (party.count > 3) {
           endGame = party.checkForWinner(el.target.textContent);
         }
@@ -157,7 +153,7 @@ const App = (): JSX.Element => {
       } else {
         el.target.style.backgroundColor = "red";
         setTimeout(() => {
-          el.target.style.backgroundColor = "white";
+          el.target.style.backgroundColor = "transparent";
         }, 250);
       }
     }
