@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  background-image: url("/images/board-g98e606215_1920.jpg");
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+}
+
+h2 {
+  font-size: 40px;
+}
+
+.players {
+  display: flex;
+  justify-content: space-between;
+}
+
+#scoreX,
+#scoreO {
+  font-weight: 600;
+}
+
+#currentPlayer {
+  text-transform: uppercase;
+}
+p {
+  margin-bottom: 30px;
+}
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  width: 366px;
+  height: 365px;
+  border: none;
+}
+
+li {
+  width: 120px;
+  height: 120px;
+  font-size: 5rem;
+  text-align: center;
+}
+
+li[data-id="0"] {
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+
+.players > div {
+  width: 40%;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 5px;
+}
+li[data-id="2"] {
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+li[data-id="4"] {
+  outline: 2px solid #fff;
+  width: 120px;
+  height: 125px;
+}
+
+li[data-id="6"] {
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+
+li[data-id="8"] {
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+#play {
+  display: inline-block;
+  margin-top: 30px;
+  border: 2px solid white;
+  width: 66%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  padding: 10px;
+}

@@ -1,0 +1,180 @@
+import { update } from "lodash";
+import React, { useId, useState, useEffect } from "react";
+function g_i(id) {
+  return document.getElementById(id);
+}
+function g_s(el) {
+  return document.querySelector(el);
+}
+function g_sa(el) {
+  return document.querySelectorAll(el);
+}
+
+const DEFAULT_WIN_LIST = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+const ticTacToe = {
+  // number of click made to complete the fame
+  countTry: 0,
+  // core of each player
+  score: {
+    playerX: 0,
+    playerO: 0,
+  },
+  // possible combinaison
+  isAWin: JSON.parse(JSON.stringify(DEFAULT_WIN_LIST)),
+  initValues() {
+    this.isAWin = JSON.parse(JSON.stringify(DEFAULT_WIN_LIST));
+  },
+};
+
+const App = (): JSX.Element => {
+  const list = [];
+  const id = useId();
+
+  const changePlayer = (el: HTMLElement) => {
+    el.innerText = el.innerText === "o".toLowerCase() ? "x" : "o";
+  };
+
+  const handleNewParty = () => {
+    const lists = g_sa("li");
+    lists.forEach((list) => {
+      list.textContent = "";
+    });
+    localStorage.setItem("partyOngoing", "true");
+
+    ticTacToe.initValues();
+  };
+  const isGameOver = (ticValue: string) => {
+    const partyResult = g_i("result");
+
+    let result = false;
+    if (ticTacToe.isAWin === undefined) {
+      ticTacToe.initValues();
+    }
+    ticTacToe.isAWin.map((x, y) => {
+      if (
+        x[0].toString() === ticValue &&
+        x[1].toString() === ticValue &&
+        x[2].toString() === ticValue &&
+        ticValue !== ""
+      ) {
+        delete ticTacToe.isAWin;
+        // ? initailise count to not show a draw when starting ag
+        ticTacToe.countTry = 0;
+        result = true;
+      }
+    });
+
+    if (!result) {
+      partyResult.hidden = false;
+      ticTacToe.countTry++;
+      if (ticTacToe.countTry > 8) {
+        partyResult.textContent = `We have a draw!`;
+      }
+    }
+    if (result) {
+      partyResult.textContent = `Player ${ticValue.toUpperCase()} win!`;
+      partyResult.hidden = false;
+      setTimeout(() => {
+        partyResult.hidden = true;
+      }, 3000);
+      updateScore(ticValue.toLowerCase());
+      localStorage.setItem("partyOngoing", "false");
+    }
+    //  console.log(played);
+    return result;
+  };
+
+  const updateScore = (player: string) => {
+    if (player === "o") {
+      ticTacToe.score.playerO++;
+      g_i("scoreO").textContent = ticTacToe.score.playerO.toString();
+    } else {
+      ticTacToe.score.playerX++;
+      g_i("scoreX").textContent = ticTacToe.score.playerX.toString();
+    }
+  };
+
+  const handleUser = (el) => {
+    let partyOngoing = localStorage.getItem("partyOngoing");
+    if (partyOngoing === "true") {
+      const currentPlayer = document.getElementById("currentPlayer");
+      if (el.target.textContent === "") {
+        let _id = Number(el.target.dataset.id);
+        el.target.textContent = currentPlayer.innerText.toLowerCase();
+        ticTacToe.isAWin.map((x, index) => {
+          if (x.includes(_id)) {
+            ticTacToe.isAWin[index][x.indexOf(_id)] = el.target.textContent;
+          }
+        });
+        if (!isGameOver(el.target.textContent)) changePlayer(currentPlayer);
+      } else {
+        el.target.style.backgroundColor = "red";
+        setTimeout(() => {
+          el.target.style.backgroundColor = "white";
+        }, 250);
+      }
+    }
+  };
+
+  const createList = () => {
+    for (let i = 0; i < 9; i++) {
+      list.push(
+        React.createElement("li", {
+          key: `${id}-${i}`,
+          "data-id": `${i}`,
+          onClick: (e) => handleUser(e),
+        })
+      );
+    }
+    return list;
+  };
+
+  useEffect(() => {
+    localStorage.setItem("partyOngoing", "false");
+  });
+
+  createList();
+  return (
+    <main>
+      <section className="tictactoe">
+        <h2>Tic Tac Toe</h2>
+        <div className="players">
+          <div>
+            <span className="name">Player X : </span>{" "}
+            <span id="scoreX">{ticTacToe.score.playerX}</span>
+          </div>
+          <div>
+            <span className="name">Player O : </span>
+            <span id="scoreO">{ticTacToe.score.playerO}</span>
+          </div>
+        </div>
+        <p>
+          Next player is <span id="currentPlayer">X</span>
+        </p>
+        <ul id="app">{list}</ul>
+        <span>
+          <button
+            onClick={() => {
+              handleNewParty();
+            }, {once:true}}
+          >
+            Play Now!
+          </button>
+        </span>
+        <span id="result" hidden></span>
+      </section>
+    </main>
+  );
+};
+
+export default App;
